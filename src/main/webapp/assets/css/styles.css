@@ -1,0 +1,23 @@
+/* .navbar{
+	list-style-type: none;
+	background-color: #1CA3D5;
+	color: white;
+	padding: 0;
+	height: 30px;
+}
+
+.navbar li{
+	display: inline;
+}
+
+.navbar li a{
+	text-decoration: none;
+	color: white;
+}
+.navbar li a:active{
+	background-color: black;
+}
+
+.disabled {
+	color: gray !important;
+} */
