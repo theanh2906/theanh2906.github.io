@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="ISO-8859-1">
+	<title>Keep Links</title>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+	<div class="row m-3">
+		<div class="col-6">
+			<label for="textInput">Input text here</label>
+			<textarea id="input" class="form-control" rows="8"></textarea><br>		
+			<button class="btn btn-primary" id="run" onclick="runAll();">Run URLs</button>
+			<button class="btn btn-primary" id="reset">Reset</button>
+		</div>	
+
+	</div>
+
+	<script type="text/javascript">
+		function runAll(){
+			var url = $("#input").val().split("\n");
+			for (var i = 0; i < url.length; i++){
+				window.open(url[i]);
+			}
+		};
+
+
+		$("#reset").click(function(){
+			$("#input").val("");
+			$("#output").val("");
+		});
+	</script>
+
+</body>
+</html>

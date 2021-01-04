@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="ISO-8859-1">
+	<title>Keep Links</title>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/TableExport/5.2.0/js/tableexport.min.js"></script>
+	<script src="lib/FileSaver.js"></script>
+</head>
+<body>
+	<div class="row m-3">
+		<div class="col-6">
+			<label for="textInput">Input text here</label>
+			<textarea id="input" class="form-control" rows="8"></textarea>
+		</div>
+		<div class="col-6">
+			<label>Output</label>
+			<textarea id="output" class="form-control" rows="8" readonly></textarea>
+		</div>
+	</div>
+	<center>
+		<button class="btn btn-primary" id="reset">Reset</button>
+		<button class="btn btn-primary" id="copyText">Copy to clipboard</button>
+		<button class="btn btn-primary" id="export">Export</button>
+	</center>
+	
+
+	<script type="text/javascript">
+		$("#input").keyup(function(){
+			var value = $("#input").val().replace(/[\r\n]{2,}/g, "\n").trim();
+			var links = [];
+			var words = value.replace(/\n/g, " ").split(" ");
+			words.forEach(function(item){
+				if (item.includes("https://")) {
+					item=item.trim();
+					links=links+item+"\n";
+				}
+			});
+			// console.log(links);
+			$("#output").val(links);
+
+		})
+
+		$("#copyText").click(function(){
+			var copyText = document.getElementById("output");
+			copyText.select();
+			copyText.setSelectionRange(0, 99999)
+			document.execCommand("copy");
+		});
+
+
+		$("#reset").click(function(){
+			$("#input").val("");
+			$("#output").val("");
+		});
+	</script>
+
+</body>
+</html>

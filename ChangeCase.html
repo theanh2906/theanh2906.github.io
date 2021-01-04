@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="ISO-8859-1">
+	<title>Change Case</title>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+	<div class="row m-3">
+		<div class="col-6">
+			<label for="textInput">Input text here</label>
+			<textarea id="input" class="form-control" rows="8"></textarea>
+		</div>
+		<div class="col-6">
+			<label>Output</label>
+			<textarea id="output" class="form-control" rows="8" readonly></textarea>
+		</div>
+	</div>
+	<center>
+		<div class="form-check-inline">
+			<label class="form-check-label">
+				<input type="radio" class="form-check-input" name="choice" value="1" checked>UPPERCASE
+			</label>
+		</div>
+		<div class="form-check-inline">
+			<label class="form-check-label">
+				<input type="radio" class="form-check-input" name="choice" value="2">lowercase
+			</label>
+		</div>
+		<br><br>
+		<button class="btn btn-primary">Reset</button>
+	</center>
+	
+
+	<script type="text/javascript">
+		$("#input").keyup(function(){
+			var value = $("#input").val().replace(/[\r\n]{2,}/g, "\n").trim();
+			if ($("input:checked").val() === '1'){
+				value = value.toUpperCase();
+			} else if ($("input:checked").val() === '2'){
+				value = value.toLowerCase();
+			}
+			$("#output").val(value);
+		})
+
+		$("button").click(function(){
+			$("#input").val("");
+			$("#output").val("");
+		})
+	</script>
+
+</body>
+</html>

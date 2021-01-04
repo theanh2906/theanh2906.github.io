@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>In hóa đơn</title>
+    <meta charset='utf-8'>
+    <link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css'>
+    <script src='https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js'></script>
+    <script src='https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js'></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js'></script>
+    <script src='https://cdn.jsdelivr.net/npm/html2canvas@1.0.0-rc.7/dist/html2canvas.js'></script>
+    <style>
+        img {
+            height: 150px;
+            width: 150px;
+            filter: brightness(1.1);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="form-group">
+            <label for="name">Tên</label>
+            <select class="form-control" name="name" id="name" required>
+                <option value="" selected data-default>--Chọn 1 đứa--</option>
+                <option value="Danh">Danh</option>
+                <option value="Thuận">Thuận</option>
+                <option value="Ý & Đạt">Ý & Đạt</option>
+                <option value="Kiệt">Kiệt</option>
+                <option value="Quyên">Quyên</option>
+                <option value="Bột">Bột</option>
+                <option value="Thúy">Thúy</option>
+                <option value="Long">Long</option>
+                <option value="Vương">Vương</option>
+                <option value="Kim">Kim</option>
+            </select>
+            <label for="money">Số tiền</label>
+            <input type="text" class="form-control" name="money" id="money" aria-describedby="helpId"
+                placeholder="Nhập tiền dô" required>
+            <small id="helpId" class="form-text text-muted">Help text</small>
+            <label for="start-date">Ngày bắt đầu</label>
+            <input type="date" class="form-control" name="start-date" id="start-date" required>
+            <label for="month">Đóng cho tháng</label><br>
+            <div class="form-check form-check-inline">
+                <label class="form-check-label">
+                    <input class="form-check-input" type="radio" name="month" value="1"> 1
+                    <input class="form-check-input" type="radio" name="month" value="2"> 2
+                    <input class="form-check-input" type="radio" name="month" value="3"> 3
+                    <input class="form-check-input" type="radio" name="month" value="4"> 4
+                    <input class="form-check-input" type="radio" name="month" value="5"> 5
+                    <input class="form-check-input" type="radio" name="month" value="6"> 6
+                    <input class="form-check-input" type="radio" name="month" value="7"> 7
+                    <input class="form-check-input" type="radio" name="month" value="8"> 8
+                    <input class="form-check-input" type="radio" name="month" value="9"> 9
+                    <input class="form-check-input" type="radio" name="month" value="10"> 10
+                    <input class="form-check-input" type="radio" name="month" value="11"> 11
+                    <input class="form-check-input" type="radio" name="month" value="12"> 12
+                </label>
+            </div><br>
+            <div class="btn-group mt-2">
+                <button class="btn btn-primary form" id="submit">In hóa đơn</button>
+                <button class="btn btn-primary form" id="capture" onclick="takeScreenShot()">Capture</button>
+                <a class='btn btn-primary form ml-2' id='download' href="" download='hoa-don.jpg' onclick='download_img(this);'>Xuất hóa đơn</a>
+            </div>
+            <div id="invoice"></div>
+            <!-- <h3>Preview :</h3>
+            <div id="previewImage"> -->
+        </div>
+    </div>
+    <script type="text/javascript">
+        var exportButton = "<a class='btn btn-primary form ml-2' id='export' download='hoa-don.jpg' onclick='download(this);'>Xuất hóa đơn</a>"
+        $("#submit").on("click", function () {
+            var invoice = "<div id='hoa-don'>" +
+                "<h5 class='text-center'>Biên lai thu tiền</h5>" +
+                "<h6 class='text-center font-italic font-weight-light'>" + now() + "</h6>" +
+                "<li>Họ và tên: " + $("#name").val() + "</li>" +
+                "<li>Nội dung thu: Tiền học phí tháng " + $("input[name='month']:checked").val() +
+                " - ngày bắt đầu: " + formatDate($("#start-date").val()) + " </li>" +
+                "<li>Số tiền thu: " + $("#money").val() + " đồng" + "</li>" +
+                "<h5 class='mt-5 ml-5'>Chữ ký</h5>" +
+                "<img src='https://lh3.googleusercontent.com/i5ikcOWXpJEOO5xJnHwHGMq20bFozIetlHjh3SBHeWSlkOjc_wMveGK2ziMn8GprqrUzCx5yWJRHgmDm6cKoz_L8SMcu2rI1HyVyzM3i0qBDycxCQw8QSknG3afcQXJ-PDjx2ucXLdgpFgOAPDBuwzCbA7eFg1SPYG1IBFO6fySSFtxOfjaEFD4YsodeJ5Hb2-lhcNnCMvD402MucNZhaRmRg_-n-gMp7HwTQ6V3fUrqHbPK7PdUt7l1Rp-KoXhbk--4FbNLBkafPZoEv4zf_VhwfLNGXB9NMiLogVrnLnD5hABc6QgsgQtMY1DTAMVtwmQ-0Rve9Bk6yB9gP39Ma_YG-0IPv2EbHfK8u77FJgXuHFYe47qpBcXU18FFF7dS9by6dcWsxlSH_jyeHQuVn0k4lyLtZotLmHANbA-YI3MQLq59JNzzrsBWgB8XvHOX5LVcPXy6LtjwvWxk9TxQYT159Bka63Dc1bJ8-M_Zfb5EsYDlV5aPUkvegpcF8ZPFu-OrPOYhNrdaPDLZMkRpRUmReXc_BvULRC7t6gevgu8CarLzlQCGaPrJ1laAUMtav9ZfAFdaGk12hbdMFnh3lqJ6N7hGHddMkNtjQOmkw6JRCdr9LkUB1IhhT1ttCXQHewY-KhtXC34wT8TdjP9gFfug7lv6uSN7VVN8zzPbTTat0q_SPm907RzM6h2p=w708-h943-no?authuser=0'>" +
+                "</div>" + 
+                "<div id='output'></div>";
+            if ($("#invoice").has("#hoa-don").length == false) {
+                $("#invoice").append(invoice);
+                // $(".btn-group").append(exportButton);
+            } else {
+                $("#hoa-don").detach();
+                $("#invoice").append(invoice);
+            }
+        })
+
+        $(document).ready(function () {
+            $(document).on('input', '#money', function (e) {
+                if (/^[0-9.,]+$/.test($(this).val())) {
+                    $(this).val(
+                        parseFloat($(this).val().replace(/,/g, '')).toLocaleString('en')
+                    );
+                } else {
+                    $(this).val(
+                        $(this)
+                        .val()
+                        .substring(0, $(this).val().length - 1)
+                    );
+                }
+            });
+        });
+
+        function now() {
+            var now = new Date();
+            return now.getDate() + "/" + now.getMonth() + "/" + now.getFullYear();
+        }
+
+        function formatDate(date) {
+            time = date.split("-");
+            return time[2] + "/" + time[1] + "/" + time[0];
+        }
+
+        var element = $("#invoice"); // global variable
+        var getCanvas; // global variable
+
+        $("#capture").on('click', function () {
+            html2canvas(element, {
+                onrendered: function (canvas) {
+                    $("#previewImage").append(canvas);
+                    getCanvas = canvas;
+                }
+            });
+        });
+
+        function takeScreenShot() {
+            // let div = document.getElementById('hoa-don')
+            // console.log(div)
+            html2canvas(document.getElementById('hoa-don')).then(
+                function(canvas) {
+                    document.getElementById('output').appendChild(canvas);
+                }
+            )
+        }
+
+        download_img = function(el) {
+            var canvas = document.getElementById('output').childNodes[0];
+            var image = canvas.toDataURL("image/jpg");
+            el.href = image;
+        }
+    </script>
+</body>
+
+</html>
