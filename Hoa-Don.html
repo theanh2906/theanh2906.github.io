@@ -109,7 +109,7 @@
 
         function now() {
             var now = new Date();
-            return now.getDate() + "/" + now.getMonth() + "/" + now.getFullYear();
+            return now.getDate() + "/" + (now.getMonth()+1).toString().replace("0","") + "/" + now.getFullYear();
         }
 
         function formatDate(date) {
