@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Search text</title>
+    <link rel='stylesheet' href='lib/css/bootstrap.css'>
+    <script src='lib/js/jquery.js'></script>
+    <script src='lib/js/bootstrap.js'></script>
+    <script src='lib/js/popper.js'></script>
+</head>
+
+<body class="container mt-3">
+    <label>Type word: </label>
+    <input class="form-control" id="text" cols="30" rows="10">
+    <label>Select web:</label><br>
+    <div class="form-group rows">
+        <input type="radio" name="web" id="hpjav" value="hpjav"> HPJAV
+        <input type="radio" name="web" id="pornhub" value="pornhub"> Pornhub
+    </div>
+    <div class="btn-group">
+        <button class="btn btn-primary" id="search">Search</button>
+        <button class="btn btn-primary" id="searchAll">Search All</button>
+    </div>
+    <script type="text/javascript">
+        $("#search").on("click", function() {
+            var CHOICE = $("input[name='web']:checked").val();
+            var url = "";
+            switch (CHOICE) {
+                case 'hpjav':
+                    url = "https://hpjav.tv/?s=" + formatURL($("#text").val(), "+");
+                    window.open(url);
+                    break;
+                case 'pornhub':
+                    url = "https://www.pornhub.com/video/search?search=" + formatURL($("#text").val(), "+");
+                    window.open(url);
+                    break;
+                default:
+                    break;
+            }
+        })
+
+        $("#searchAll")
+
+        function formatURL(wordsToReplace ,replaceWith) {
+           return wordsToReplace.trim().replaceAll(" ", replaceWith);
+        }
+    </script>
+</body>
+
+</html>
