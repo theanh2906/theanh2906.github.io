@@ -44,6 +44,8 @@
                 placeholder="Nhập tiền dô" required>
             <label for="start-date">Ngày bắt đầu</label>
             <input type="date" class="form-control" name="start-date" id="start-date" required>
+            <label for="end-date">Ngày kết thúc</label>
+            <input type="date" class="form-control" name="end-date" id="end-date" required>
             <label for="month">Đóng cho tháng</label><br>
             <div class="form-check form-check-inline" id="month">
                 <label class="form-check-label">
@@ -93,7 +95,8 @@
                 "<h6 class='text-center font-italic font-weight-light'>" + now() + "</h6>" +
                 "<li>Họ và tên: " + $("#name").val() + "</li>" +
                 "<li>Nội dung thu: Tiền học phí tháng " + $("input[name='month']:checked").val() +
-                " - ngày bắt đầu: " + formatDate($("#start-date").val()) + " </li>" +
+                " - ngày bắt đầu: " + formatDate($("#start-date").val()) +
+                " - ngày kết thúc: " + formatDate($("#end-date").val()) + " </li>" +
                 "<li>Số tiền thu: " + $("#money").val() + " đồng" + "</li>" +
                 "<h5 class='mt-5 ml-5'>Chữ ký</h5>" +
                 "<img src='chu-ky.jpg'>" +
@@ -156,7 +159,7 @@
             )
         }
 
-        download_img = function(el) {
+        function download_img(el) {
             var canvas = document.getElementById('output').childNodes[0];
             var image = canvas.toDataURL("image/jpg");
             el.href = image;
